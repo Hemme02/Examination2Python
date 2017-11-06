@@ -53,6 +53,10 @@ class SocketHandler:
             text = text.lstrip("#")
             for clientSock in self.list_of_known_clientSockets:
                 clientSock.send(str.encode("Admin: " + text))
+        if text[0] =='&':
+            text = text.lstrip("&")
+            for clientSock in self.list_of_known_clientSockets:
+                clientSock.send(str.encode(text))
 
     def startReceiverThread(self, clientSocket, clientAddr):
         _thread.start_new_thread(self.startReceiving,(clientSocket,clientAddr,))
@@ -72,13 +76,15 @@ class SocketHandler:
 
     ##kontrollera i receive om texten innehåller /kick
     def Kick(self, text):
-        print('Kick startar')
         global kick_dict
         for client in self.list_of_known_clientSockets:
             clientName = text.lstrip("/kick ")
-        ip = kick_dict[clientName]
-        print(str(ip) + 'Disconnected')
-        ip.close()
+        if clientName in kick_dict.keys():
+            ip = kick_dict[clientName]
+            print(str(ip) + 'Disconnected')
+            ip.close()
+        else:
+            print('No such user')
 
           #  if clientIp == client.gethostbyname():
            #     self.list_of_known_clientSockets.remove(client)
@@ -124,9 +130,8 @@ class SocketHandler:
             try:
                 global kick_dict
                 kick_dict[username] = clientSocket
-                print(kick_dict)
                 msg = clientSocket.recv(1024).decode()
-                self.sendAndShowMsg(username + ": " + msg)
+                self.sendAndShowMsg('&'+username + ": " + msg)
             except:
                 self.list_of_known_clientSockets.remove(clientSocket)
                 self.list_of_known_clientAddr.remove(clientAddr)
