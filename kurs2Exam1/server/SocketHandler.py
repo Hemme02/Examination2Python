@@ -44,7 +44,6 @@ class SocketHandler:
         return "succeed"
 
     def sendAndShowMsg(self, text):
-        print(text)
         if "/close" in text:
             sys.exit(0)
         if "/kick" in text:
@@ -77,8 +76,7 @@ class SocketHandler:
     ##kontrollera i receive om texten innehåller /kick
     def Kick(self, text):
         global kick_dict
-        for client in self.list_of_known_clientSockets:
-            clientName = text.lstrip("/kick ")
+        clientName = text.lstrip("/kick ")
         if clientName in kick_dict.keys():
             ip = kick_dict[clientName]
             print(str(ip) + 'Disconnected')
