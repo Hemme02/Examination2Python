@@ -4,6 +4,9 @@ import sys
 from kurs2Exam1.server.Users import CollectionOfUsers
 
 class SocketHandler:
+    global kick_dict
+    kick_dict = {}
+
     def __init__(self):
         self.serverSocket= socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.users = CollectionOfUsers()
@@ -42,9 +45,14 @@ class SocketHandler:
 
     def sendAndShowMsg(self, text):
         print(text)
-        
-        for clientSock in self.list_of_known_clientSockets:
-            clientSock.send(str.encode(text))
+        if "/close" in text:
+            sys.exit(0)
+        if "/kick" in text:
+            self.Kick(text)
+        if text[0] == "#":
+            text = text.lstrip("#")
+            for clientSock in self.list_of_known_clientSockets:
+                clientSock.send(str.encode("Admin: " + text))
 
     def startReceiverThread(self, clientSocket, clientAddr):
         _thread.start_new_thread(self.startReceiving,(clientSocket,clientAddr,))
@@ -64,10 +72,16 @@ class SocketHandler:
 
     ##kontrollera i receive om texten innehåller /kick
     def Kick(self, text):
+        print('Kick startar')
+        global kick_dict
         for client in self.list_of_known_clientSockets:
-            clientIp = text.lstrip("/kick")
-            if clientIp == client.gethostbyname():
-                self.list_of_known_clientSockets.remove(client)
+            clientName = text.lstrip("/kick ")
+        ip = kick_dict[clientName]
+        print(str(ip) + 'Disconnected')
+        ip.close()
+
+          #  if clientIp == client.gethostbyname():
+           #     self.list_of_known_clientSockets.remove(client)
 
     def listenToUnknownClient(self,clientSocket, clientAddr):
         while True:
@@ -108,6 +122,9 @@ class SocketHandler:
     def listenToknownClient(self,clientSocket, clientAddr, username):
         while True:
             try:
+                global kick_dict
+                kick_dict[username] = clientSocket
+                print(kick_dict)
                 msg = clientSocket.recv(1024).decode()
                 self.sendAndShowMsg(username + ": " + msg)
             except:
