@@ -46,13 +46,13 @@ class SocketHandler:
     def sendAndShowMsg(self, text):
         if "/close" in text:
             sys.exit(0)
-        if "/kick" in text:
+        elif "/kick" in text:
             self.Kick(text)
-        if text[0] == "#":
+        elif text[0] == "#":
             text = text.lstrip("#")
             for clientSock in self.list_of_known_clientSockets:
                 clientSock.send(str.encode("Admin: " + text))
-        if text[0] =='&':
+        elif text[0] =='&':
             text = text.lstrip("&")
             print(text)
             for clientSock in self.list_of_known_clientSockets:
@@ -79,8 +79,8 @@ class SocketHandler:
         global kick_dict
         clientName = text.lstrip("/kick ")
         ip = kick_dict[clientName]
-        print(str(ip) + 'Disconnected')
-        #self.sendAndShowMsg('&'+clientName +' disconnected')
+        print(clientName + 'Disconnected')
+        self.sendAndShowMsg('&'+clientName +' disconnected')
         ip.close()
 
     def listenToUnknownClient(self,clientSocket, clientAddr):
