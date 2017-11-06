@@ -1,4 +1,4 @@
-from kurs2Exam1.server.SocketHandler import SocketHandler
+from SocketHandler import SocketHandler
 
 def get_port():
     while True:

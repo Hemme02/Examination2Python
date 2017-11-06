@@ -1,7 +1,7 @@
 import socket
 import _thread
 import sys
-from kurs2Exam1.server.Users import CollectionOfUsers
+from Users import CollectionOfUsers
 
 class SocketHandler:
     global kick_dict
@@ -32,7 +32,7 @@ class SocketHandler:
             self.serverSocket.bind(('',int(port)))
         except:
             return "failed"
-        self.serverSocket.listen()
+        self.serverSocket.listen(5)
 
         self.list_of_known_clientSockets = []
         self.list_of_known_clientAddr = []

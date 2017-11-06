@@ -1,5 +1,5 @@
-from kurs2Exam1.server.SocketHandler import SocketHandler
-from kurs2Exam1.server.TerminalServer import *
+from SocketHandler import SocketHandler
+from TerminalServer import *
 import _thread
 
 socketHandler = SocketHandler()
