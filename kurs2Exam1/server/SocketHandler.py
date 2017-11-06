@@ -47,8 +47,9 @@ class SocketHandler:
         if "/kick" in text:
             self.Kick(text)
         if text[0] == "#":
+            text.lstrip("#")
             for clientSock in self.list_of_known_clientSockets:
-                clientSock.send(str.encode(text))
+                clientSock.send(str.encode("Admin: " + text))
 
     def startReceiverThread(self, clientSocket, clientAddr):
         _thread.start_new_thread(self.startReceiving,(clientSocket,clientAddr,))
