@@ -54,6 +54,7 @@ class SocketHandler:
                 clientSock.send(str.encode("Admin: " + text))
         if text[0] =='&':
             text = text.lstrip("&")
+            print(text)
             for clientSock in self.list_of_known_clientSockets:
                 clientSock.send(str.encode(text))
 
