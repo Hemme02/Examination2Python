@@ -42,9 +42,13 @@ class SocketHandler:
 
     def sendAndShowMsg(self, text):
         print(text)
-        
-        for clientSock in self.list_of_known_clientSockets:
-            clientSock.send(str.encode(text))
+        if "/close" in text:
+            sys.exit(0)
+        if "/kick" in text:
+            self.Kick(text)
+        if text[0] == "#":
+            for clientSock in self.list_of_known_clientSockets:
+                clientSock.send(str.encode(text))
 
     def startReceiverThread(self, clientSocket, clientAddr):
         _thread.start_new_thread(self.startReceiving,(clientSocket,clientAddr,))
@@ -67,6 +71,7 @@ class SocketHandler:
         for client in self.list_of_known_clientSockets:
             clientIp = text.lstrip("/kick")
             if clientIp == client.gethostbyname():
+                client.close()
                 self.list_of_known_clientSockets.remove(client)
 
     def listenToUnknownClient(self,clientSocket, clientAddr):
