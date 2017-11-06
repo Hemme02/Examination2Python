@@ -1,5 +1,13 @@
 TERMINAL BASERAD
 
+Ta bort gui delen från servern
+
+klient chatt gui ska hanteras i terminalen istället
+klient port och IP ska hanteras i terminalen
+
+ta bort tråd
+
 #Chatt
 /kick
 /close
+

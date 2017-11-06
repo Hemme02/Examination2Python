@@ -1,5 +1,5 @@
-from server.GuiHandler import GuiHandler
-from server.SocketHandler import SocketHandler
+from kurs2Exam1.server.GuiHandler import GuiHandler
+from kurs2Exam1.server.SocketHandler import SocketHandler
 
 socketHandler = SocketHandler()
 guiHandler = GuiHandler(socketHandler)

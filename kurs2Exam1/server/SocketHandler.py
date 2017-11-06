@@ -1,7 +1,7 @@
 import socket
 import _thread
 import sys
-from server.Users import CollectionOfUsers
+from kurs2Exam1.server.Users import CollectionOfUsers
 
 class SocketHandler:
     def __init__(self):
