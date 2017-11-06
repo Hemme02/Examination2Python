@@ -78,15 +78,10 @@ class SocketHandler:
     def Kick(self, text):
         global kick_dict
         clientName = text.lstrip("/kick ")
-        if clientName in kick_dict.keys():
-            ip = kick_dict[clientName]
-            print(str(ip) + 'Disconnected')
-            ip.close()
-        else:
-            print('No such user')
-
-          #  if clientIp == client.gethostbyname():
-           #     self.list_of_known_clientSockets.remove(client)
+        ip = kick_dict[clientName]
+        print(str(ip) + 'Disconnected')
+        #self.sendAndShowMsg('&'+clientName +' disconnected')
+        ip.close()
 
     def listenToUnknownClient(self,clientSocket, clientAddr):
         while True:
@@ -103,7 +98,7 @@ class SocketHandler:
                 password = args[2]
                 if self.users.doesThisUserExistAndNotActive(username,password):
                     clientSocket.send(str.encode("ok"))
-                    self.sendAndShowMsg(username + " is connected")
+                    self.sendAndShowMsg('&'+username + " is connected")
                     return username
                 else:
                     clientSocket.send(str.encode("not ok"))
@@ -134,6 +129,6 @@ class SocketHandler:
             except:
                 self.list_of_known_clientSockets.remove(clientSocket)
                 self.list_of_known_clientAddr.remove(clientAddr)
-                self.sendAndShowMsg(username+" disconnected")
+                self.sendAndShowMsg('&'+username+" disconnected")
                 self.users.inactiveUser(username)
                 return
