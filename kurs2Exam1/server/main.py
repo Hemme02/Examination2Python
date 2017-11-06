@@ -1,15 +1,14 @@
-from server.GuiHandler import GuiHandler
-from server.SocketHandler import SocketHandler
+from kurs2Exam1.server.SocketHandler import SocketHandler
+from kurs2Exam1.server.TerminalServer import *
 
 socketHandler = SocketHandler()
-guiHandler = GuiHandler(socketHandler)
-socketHandler.setGuiHandler(guiHandler)
 
-port = guiHandler.getPort()
+
+port = get_port()
 resultOfBinding = socketHandler.startToAcceptConnection(port)
 
 if resultOfBinding == "failed":
-    guiHandler.showWarningMsg()
+    print('could not bind port')
 else:
-    guiHandler.startGui()
+   socketHandler.startAccepting()
 

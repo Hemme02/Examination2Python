@@ -1,16 +1,13 @@
 import socket
 import _thread
 import sys
-from server.Users import CollectionOfUsers
+from kurs2Exam1.server.Users import CollectionOfUsers
 
 class SocketHandler:
     def __init__(self):
         self.serverSocket= socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.users = CollectionOfUsers()
         self.users.readUsersFromFile()
-
-    def setGuiHandler(self,guiHandler_):
-        self.guiHandler = guiHandler_
 
     def closeEveryThing(self):
         self.serverSocket.close()
@@ -45,7 +42,7 @@ class SocketHandler:
         return "succeed"
 
     def sendAndShowMsg(self, text):
-        self.guiHandler.showMessage(text)
+        print(text)
         for clientSock in self.list_of_known_clientSockets:
             clientSock.send(str.encode(text))
 
