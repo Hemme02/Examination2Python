@@ -1,3 +1,5 @@
+from kurs2Exam1.server.SocketHandler import SocketHandler
+
 def get_port():
     while True:
         port_entered = input('Enter Port: ')
@@ -5,3 +7,8 @@ def get_port():
             print('Error. Port must be entered')
         else:
             return port_entered
+
+def send_from_terminal(main):
+    while True:
+        msg = input()
+        main.sendAndShowMsg(msg)
