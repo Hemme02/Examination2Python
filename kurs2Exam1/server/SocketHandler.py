@@ -21,7 +21,6 @@ class SocketHandler:
                 self.list_of_unknown_clientSockets.append(clientSocket)
                 self.list_of_unknown_clientAddr.append(clientAddr)
                 self.startReceiverThread(clientSocket, clientAddr)
-
             except:
                 pass
 
@@ -43,6 +42,7 @@ class SocketHandler:
 
     def sendAndShowMsg(self, text):
         print(text)
+        
         for clientSock in self.list_of_known_clientSockets:
             clientSock.send(str.encode(text))
 
@@ -50,7 +50,7 @@ class SocketHandler:
         _thread.start_new_thread(self.startReceiving,(clientSocket,clientAddr,))
 
     def startReceiving(self,clientSocket, clientAddr):
-        resultOfLogin = self.listenToUnknownClinet(clientSocket,clientAddr)
+        resultOfLogin = self.listenToUnknownClient(clientSocket,clientAddr)
 
         if resultOfLogin !=False:
             username = resultOfLogin
@@ -60,9 +60,16 @@ class SocketHandler:
             self.list_of_known_clientSockets.append(clientSocket)
             self.list_of_known_clientAddr.append(clientAddr)
 
-            self.listenToknownClinet(clientSocket,clientAddr,username)
+            self.listenToknownClient(clientSocket,clientAddr,username)
 
-    def listenToUnknownClinet(self,clientSocket, clientAddr):
+    ##kontrollera i receive om texten innehåller /kick
+    def Kick(self, text):
+        for client in self.list_of_known_clientSockets:
+            clientIp = text.lstrip("/kick")
+            if clientIp == client.gethostbyname():
+                self.list_of_known_clientSockets.remove(client)
+
+    def listenToUnknownClient(self,clientSocket, clientAddr):
         while True:
             try:
                 msg = clientSocket.recv(1024).decode()
@@ -98,7 +105,7 @@ class SocketHandler:
                 else:
                     clientSocket.send(str.encode("not fine"))
 
-    def listenToknownClinet(self,clientSocket, clientAddr,username):
+    def listenToknownClient(self,clientSocket, clientAddr, username):
         while True:
             try:
                 msg = clientSocket.recv(1024).decode()
