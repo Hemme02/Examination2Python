@@ -32,6 +32,9 @@ class GuiHandler:
         return self.ipAndPortToReturn
 
     def startMainGui(self):
+        def sendMsgBySocketHandlerByEnter(event):
+            self.sendMsgBySocketHandler()
+            self.entryOfUser.delete('0', 'end')
 
         self.root = tkinter.Tk()
         scroll = tkinter.Scrollbar(self.root)
@@ -41,6 +44,7 @@ class GuiHandler:
         scroll.config(command=self.chattContents.yview)
         self.entryOfUser = tkinter.Entry(self.root)
         self.entryOfUser.grid(row = 1,column = 0)
+        self.entryOfUser.bind('<Return>', sendMsgBySocketHandlerByEnter)
         self.buttonToTrigg = tkinter.Button(self.root, text = "enter", command = self.sendMsgBySocketHandler)
         self.buttonToTrigg.grid(row = 1,column = 1)
 
